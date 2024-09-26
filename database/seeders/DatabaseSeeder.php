@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,7 +18,18 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'login_id' => 'test123',
         ]);
+        
+
+        
+
+        $this->call([
+            PostSeeder::class,
+            CommentSeeder::class,
+            NestedCommentSeeder::class,
+        ]);
+        
+
     }
 }
