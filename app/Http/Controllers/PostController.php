@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostCollection;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -14,7 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return response()->json(["data"=>Post::paginate(10)],200);
+        return response()->json(["data"=>new PostCollection(Post::paginate(10))],200);
     }
 
     /**
@@ -30,7 +33,8 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        Post::create($request->all());
+        return response()->json(['message'=>'store successfully']);
     }
 
     /**
@@ -38,7 +42,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return response()->json(['data'=>new PostResource(Post::findOrFail($post->id))],200);
     }
 
     /**
@@ -54,7 +58,14 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $userEmail = Auth::user()->email;
+        $data = Post::findOrFail($post->id);
+        if($data && $data->author === $userEmail){
+            $post->update($request->all());
+            return response()->json(['message' => 'updated successfully']);
+        }else{
+            return response()->json(['message'=>'unauthorized'],401);
+        }
     }
 
     /**
@@ -62,6 +73,13 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $userEmail = Auth::user()->email;
+        $data = Post::findOrFail($post->id);
+        if($data && $data->author === $userEmail){
+            $post->delete();
+            return response()->json(['data' => 'deleted successfully']);
+        }else{
+            return response()->json(['data'=>'unauthorized'],401);
+        }
     }
 }
