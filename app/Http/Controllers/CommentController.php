@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CommentCollection;
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
@@ -14,7 +15,9 @@ class CommentController extends Controller
      */
     public function index()
     {
-        
+        $postId = request()->query('post-id');
+        $data = Comment::where('post_id',$postId)->get();
+        return response()->json(['data'=>new CommentCollection($data)],200);
     }
 
     /**

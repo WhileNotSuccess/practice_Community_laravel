@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->integer('post_id');
+            $table->string('post_id');
             $table->string('author');
             $table->string('content');
             $table->timestamps();

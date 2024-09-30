@@ -1,0 +1,371 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "community",
+        "description": "API Documentation",
+        "contact": {
+            "name": "MunSeongYun",
+            "email": "borygashill608@gmail.com"
+        },
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/posts": {
+            "get": {
+                "tags": [
+                    "post"
+                ],
+                "summary": "posts 테이블",
+                "description": "posts 테이블에 등록된 모든 데이터를 data라는 키를 가진 배열로 반환, 전체페이지, 현재페이지, 다음페이지url, 이전페이지url 제공",
+                "operationId": "e9eaf7df702a94f4443677bd1a36cfe6",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "게시판 카테고리",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "게시글 배열들",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "currentPage": {
+                                            "type": "string",
+                                            "example": "2"
+                                        },
+                                        "totalPage": {
+                                            "type": "string",
+                                            "example": "16"
+                                        },
+                                        "nextPage": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/posts?category=%EC%9E%90%EC%9C%A0%EA%B2%8C%EC%8B%9C%ED%8C%90&page=3"
+                                        },
+                                        "prevPage": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/posts?category=%EC%9E%90%EC%9C%A0%EA%B2%8C%EC%8B%9C%ED%8C%90&page=1"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Prof."
+                                                    },
+                                                    "content": {
+                                                        "type": "string",
+                                                        "example": "Sunt excepturi ad officiis laudantium."
+                                                    },
+                                                    "author": {
+                                                        "type": "string",
+                                                        "example": "rylan65"
+                                                    },
+                                                    "category": {
+                                                        "type": "string",
+                                                        "example": "자유게시판"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-30T05:45:46.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-30T05:45:46.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "카테고리가 없는 경우"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "post"
+                ],
+                "summary": "새로운 게시글 생성",
+                "description": "요청 본문에 포함된 데이터를 기반으로 새로운 게시글을 생성합니다.",
+                "operationId": "4a657e51a0066c64781851f2fd2651e2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "게시글 제목",
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "description": "게시글 내용",
+                                        "type": "string"
+                                    },
+                                    "category": {
+                                        "description": "게시글 카테고리",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "store successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "store successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/posts/{post}": {
+            "get": {
+                "tags": [
+                    "post"
+                ],
+                "summary": "특정 게시글 조회",
+                "description": "특정 게시글의 세부 정보를 반환합니다.",
+                "operationId": "d3910995cb542d02254c9fc6133cc10c",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "게시글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "게시글 세부 정보",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Dr."
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Perspiciatis facilis voluptates error architecto mollitia ex sit."
+                                                },
+                                                "author": {
+                                                    "type": "string",
+                                                    "example": "naomi.jacobson"
+                                                },
+                                                "category": {
+                                                    "type": "string",
+                                                    "example": "축제게시판"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-09-30T05:45:46.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-09-30T05:45:46.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "게시글을 찾을 수 없음"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "post"
+                ],
+                "summary": "특정 게시글 업데이트",
+                "description": "요청 본문에 포함된 데이터를 기반으로 특정 게시글을 업데이트합니다.",
+                "operationId": "4897f3aff4c2ef880950782e3669baf4",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "게시글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "게시글 제목",
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "description": "게시글 내용",
+                                        "type": "string"
+                                    },
+                                    "category": {
+                                        "description": "게시글 카테고리",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "게시글을 찾을 수 없음"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "post"
+                ],
+                "summary": "특정 게시글 삭제",
+                "description": "특정 게시글을 삭제합니다.",
+                "operationId": "995630fb8f7510fb391745db0c073d23",
+                "parameters": [
+                    {
+                        "name": "post",
+                        "in": "path",
+                        "description": "게시글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "게시글을 찾을 수 없음"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "post",
+            "description": "post"
+        }
+    ]
+}
