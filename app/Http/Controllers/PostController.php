@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -37,6 +38,16 @@ class PostController extends Controller
  *             example="자유게시판, 축제게시판, 공지사항"
  *         )
  *     ),
+ *     @OA\Parameter(
+ *             name="limit",
+ *             in="query",
+ *             description="한 페이지에 보일 게시글 개수, 없으면 10으로 고정",
+ *             required=false,
+ *             @OA\Schema(
+ *                 type="integer",
+ *                 example="10"
+ *             )
+ *         ),
  *     @OA\Response(
  *         response=200,
  *         description="게시글 배열들",
@@ -71,8 +82,12 @@ class PostController extends Controller
 
 public function index()
 {
+    $limit = request()->query('limit');
+    if(!$limit){
+        $limit = 10;
+    }
     if ($category = request()->query('category')) {
-        $data = Post::where('category', $category)->paginate(10);
+        $data = Post::where('category', $category)->paginate($limit);
         $currentPage = $data->currentPage();
         $totalPage = $data->lastPage();
         $nextPage = $data->appends(['category' => $category])->nextPageUrl();

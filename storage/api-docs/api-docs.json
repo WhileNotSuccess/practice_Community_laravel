@@ -698,6 +698,16 @@
                             "type": "string",
                             "example": "자유게시판, 축제게시판, 공지사항"
                         }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "한 페이지에 보일 게시글 개수, 없으면 10으로 고정",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": "10"
+                        }
                     }
                 ],
                 "responses": {
