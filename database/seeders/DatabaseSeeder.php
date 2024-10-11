@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             PostSeeder::class,
             CommentSeeder::class,
             NestedCommentSeeder::class,
+            CategorySeeder::class,
         ]);
         
 
