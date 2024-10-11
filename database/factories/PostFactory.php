@@ -18,7 +18,7 @@ class PostFactory extends Factory
     {
         return [
             'title' => $this->faker->title(),
-            'content' => $this->faker->sentence(),
+            'content' => $this->faker->sentence(10),
             'category'=> $this->faker->randomElement(['공지사항','자유게시판','축제게시판']),
             'author'=>$this->faker->userName()
         ];

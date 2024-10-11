@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class CommentFactory extends Factory
     {
         return [
             'post_id'=>Post::factory(),
-            'author'=>$this->faker->userName(),
+            'author'=>User::inRandomOrder()->first()->nick_name,
             'content'=>$this->faker->sentence()
         ];
     }

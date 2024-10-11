@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,7 @@ class NestedCommentFactory extends Factory
     {
         return [
             'comment_id'=>Comment::factory(),
-            'author'=>$this->faker->userName(),
+            'author'=>User::inRandomOrder()->first()->nick_name,
             'content'=>$this->faker->sentence()
         ];
     }

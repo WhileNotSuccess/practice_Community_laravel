@@ -11,7 +11,7 @@ class StoreNestedCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class StoreNestedCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "commentId" =>['required', 'string'],
+            "content" =>['required', 'string'],
         ];
+    }
+
+    protected function prepareForValidation(){
+        $this->merge([
+            'comment_id'=>$this->commentId,
+            'author'=>$this->user()->nick_name
+        ]);
     }
 }

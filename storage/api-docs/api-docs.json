@@ -10,12 +10,642 @@
         "version": "0.1"
     },
     "paths": {
+        "/api/comments": {
+            "get": {
+                "tags": [
+                    "comment"
+                ],
+                "summary": "특정 게시글의 댓글 목록 조회",
+                "description": "특정 게시글의 댓글 목록을 반환합니다.",
+                "operationId": "0406f270b674fae17bf23b4206a3004f",
+                "parameters": [
+                    {
+                        "name": "post-id",
+                        "in": "query",
+                        "description": "게시글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "댓글 목록",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 11
+                                                    },
+                                                    "post_id": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "author": {
+                                                        "type": "string",
+                                                        "example": "aokon"
+                                                    },
+                                                    "content": {
+                                                        "type": "string",
+                                                        "example": "Rerum perferendis velit qui et consequatur ipsa."
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-30T05:45:48.000000Z"
+                                                    },
+                                                    "updatedAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-30T05:45:48.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "post id가 없는 경우"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "comment"
+                ],
+                "summary": "새로운 댓글 생성",
+                "description": "요청 본문에 포함된 데이터를 기반으로 새로운 댓글을 생성합니다.",
+                "operationId": "300619a0a4003920aafe960e45688102",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "postId": {
+                                        "description": "게시글 ID",
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "description": "댓글 내용",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "store successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "store successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/comments/{comment}": {
+            "get": {
+                "tags": [
+                    "comment"
+                ],
+                "summary": "특정 댓글 조회",
+                "description": "특정 댓글의 세부 정보를 반환합니다.",
+                "operationId": "df604464ebd8be1727bb39c2711e2f03",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "path",
+                        "description": "댓글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "댓글 세부 정보",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "postId": {
+                                                    "type": "string",
+                                                    "example": "1"
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Perspiciatis facilis voluptates error architecto mollitia ex sit."
+                                                },
+                                                "author": {
+                                                    "type": "string",
+                                                    "example": "naomi.jacobson"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-09-30T05:45:46.000000Z"
+                                                },
+                                                "updatedAt": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-09-30T05:45:46.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "댓글을 찾을 수 없음"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "comment"
+                ],
+                "summary": "특정 댓글 업데이트",
+                "description": "요청 본문에 포함된 데이터를 기반으로 특정 댓글을 업데이트합니다.",
+                "operationId": "11551b83dcd65f7f079adf59f8c0348e",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "path",
+                        "description": "댓글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "content": {
+                                        "description": "댓글 내용",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "댓글을 찾을 수 없음"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "comment"
+                ],
+                "summary": "특정 댓글 삭제",
+                "description": "특정 댓글을 삭제합니다.",
+                "operationId": "e2e2b84a31c09628af8301e2ab9b209c",
+                "parameters": [
+                    {
+                        "name": "comment",
+                        "in": "path",
+                        "description": "댓글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "댓글을 찾을 수 없음"
+                    }
+                }
+            }
+        },
+        "/api/nested-comments": {
+            "get": {
+                "tags": [
+                    "nested-comment"
+                ],
+                "summary": "특정 댓글의 대댓글 목록 조회",
+                "description": "특정 댓글의 대댓글 목록을 반환합니다.",
+                "operationId": "147059f8428020b4059a6fad85ca2ce8",
+                "parameters": [
+                    {
+                        "name": "comment-id",
+                        "in": "query",
+                        "description": "댓글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "대댓글 목록",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 11
+                                                    },
+                                                    "commentId": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "author": {
+                                                        "type": "string",
+                                                        "example": "aokon"
+                                                    },
+                                                    "content": {
+                                                        "type": "string",
+                                                        "example": "Rerum perferendis velit qui et consequatur ipsa."
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-30T05:45:48.000000Z"
+                                                    },
+                                                    "updatedAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-30T05:45:48.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "댓글 아이디 없음"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "nested-comment"
+                ],
+                "summary": "새로운 대댓글 생성",
+                "description": "요청 본문에 포함된 데이터를 기반으로 새로운 대댓글을 생성합니다.",
+                "operationId": "9f9f8aab586f9195eff4a15a933c091e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "commentId": {
+                                        "description": "댓글 ID",
+                                        "type": "string"
+                                    },
+                                    "content": {
+                                        "description": "대댓글 내용",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "store successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "store successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nested-comments/{nested-comment}": {
+            "get": {
+                "tags": [
+                    "nested-comment"
+                ],
+                "summary": "특정 대댓글 조회",
+                "description": "특정 대댓글의 세부 정보를 반환합니다.",
+                "operationId": "a22e80d2ab312c7dd5088caab9ec2c04",
+                "parameters": [
+                    {
+                        "name": "nested-comment",
+                        "in": "path",
+                        "description": "대댓글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "대댓글 세부 정보",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "commentId": {
+                                                    "type": "string",
+                                                    "example": "1"
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Perspiciatis facilis voluptates error architecto mollitia ex sit."
+                                                },
+                                                "author": {
+                                                    "type": "string",
+                                                    "example": "naomi.jacobson"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-09-30T05:45:46.000000Z"
+                                                },
+                                                "updatedAt": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-09-30T05:45:46.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "대댓글을 찾을 수 없음"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "nested-comment"
+                ],
+                "summary": "특정 대댓글 업데이트",
+                "description": "요청 본문에 포함된 데이터를 기반으로 특정 대댓글을 업데이트합니다.",
+                "operationId": "831ad6fe29058fdefef2809d6258f3b2",
+                "parameters": [
+                    {
+                        "name": "nested-comment",
+                        "in": "path",
+                        "description": "대댓글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "content": {
+                                        "description": "대댓글 내용",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "updated successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "대댓글을 찾을 수 없음"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "nested-comment"
+                ],
+                "summary": "특정 댓글 삭제",
+                "description": "특정 댓글을 삭제합니다.",
+                "operationId": "74dc35cda1118d70b7227008b5254b34",
+                "parameters": [
+                    {
+                        "name": "nested-comment",
+                        "in": "path",
+                        "description": "대댓글 ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "댓글을 찾을 수 없음"
+                    }
+                }
+            }
+        },
         "/api/posts": {
             "get": {
                 "tags": [
                     "post"
                 ],
-                "summary": "posts 테이블",
+                "summary": "게시글 조회",
                 "description": "posts 테이블에 등록된 모든 데이터를 data라는 키를 가진 배열로 반환, 전체페이지, 현재페이지, 다음페이지url, 이전페이지url 제공",
                 "operationId": "e9eaf7df702a94f4443677bd1a36cfe6",
                 "parameters": [
@@ -25,7 +655,8 @@
                         "description": "게시판 카테고리",
                         "required": false,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "자유게시판, 축제게시판, 공지사항"
                         }
                     }
                 ],
@@ -76,12 +707,12 @@
                                                         "type": "string",
                                                         "example": "자유게시판"
                                                     },
-                                                    "created_at": {
+                                                    "createdAt": {
                                                         "type": "string",
                                                         "format": "date-time",
                                                         "example": "2024-09-30T05:45:46.000000Z"
                                                     },
-                                                    "updated_at": {
+                                                    "updatedAt": {
                                                         "type": "string",
                                                         "format": "date-time",
                                                         "example": "2024-09-30T05:45:46.000000Z"
@@ -200,12 +831,12 @@
                                                     "type": "string",
                                                     "example": "축제게시판"
                                                 },
-                                                "created_at": {
+                                                "createdAt": {
                                                     "type": "string",
                                                     "format": "date-time",
                                                     "example": "2024-09-30T05:45:46.000000Z"
                                                 },
-                                                "updated_at": {
+                                                "updatedAt": {
                                                     "type": "string",
                                                     "format": "date-time",
                                                     "example": "2024-09-30T05:45:46.000000Z"
@@ -363,6 +994,14 @@
         }
     },
     "tags": [
+        {
+            "name": "comment",
+            "description": "comment"
+        },
+        {
+            "name": "nested-comment",
+            "description": "nested-comment"
+        },
         {
             "name": "post",
             "description": "post"

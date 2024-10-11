@@ -11,7 +11,7 @@ class StoreCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,14 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "postId"=>['required','string'],
+            "content"=>['required','string'],
         ];
+    }
+    protected function prepareForValidation(){
+        $this->merge([
+            'post_id'=>$this->postId,
+            'author'=>$this->user()->nick_name
+        ]);
     }
 }

@@ -25,7 +25,7 @@ class PostController extends Controller
  * @OA\Get(
  *     path="/api/posts",
  *     tags={"post"},
- *     summary="posts 테이블",
+ *     summary="게시글 조회",
  *     description="posts 테이블에 등록된 모든 데이터를 data라는 키를 가진 배열로 반환, 전체페이지, 현재페이지, 다음페이지url, 이전페이지url 제공",
  *     @OA\Parameter(
  *         name="category",
@@ -33,7 +33,8 @@ class PostController extends Controller
  *         description="게시판 카테고리",
  *         required=false,
  *         @OA\Schema(
- *             type="string"
+ *             type="string",
+ *             example="자유게시판, 축제게시판, 공지사항"
  *         )
  *     ),
  *     @OA\Response(
@@ -55,8 +56,8 @@ class PostController extends Controller
  *                     @OA\Property(property="content", type="string", example="Sunt excepturi ad officiis laudantium."),
  *                     @OA\Property(property="author", type="string", example="rylan65"),
  *                     @OA\Property(property="category", type="string", example="자유게시판"),
- *                     @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z"),
- *                     @OA\Property(property="updated_at", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z")
+ *                     @OA\Property(property="createdAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z"),
+ *                     @OA\Property(property="updatedAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z")
  *                 )
  *             )
  *         )
@@ -157,8 +158,8 @@ public function index()
  *                 @OA\Property(property="content", type="string", example="Perspiciatis facilis voluptates error architecto mollitia ex sit."),
  *                 @OA\Property(property="author", type="string", example="naomi.jacobson"),
  *                 @OA\Property(property="category", type="string", example="축제게시판"),
- *                 @OA\Property(property="created_at", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z"),
- *                 @OA\Property(property="updated_at", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z")
+ *                 @OA\Property(property="createdAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z"),
+ *                 @OA\Property(property="updatedAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z")
  *             )
  *         )
  *     ),
@@ -231,9 +232,9 @@ public function index()
 
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $userEmail = Auth::user()->email;
+        $userNickName = Auth::user()->nick_name;
         $data = Post::findOrFail($post->id);
-        if($data && $data->author === $userEmail){
+        if($data && $data->author === $userNickName){
             $post->update($request->all());
             return response()->json(['message' => 'updated successfully']);
         }else{
@@ -281,9 +282,9 @@ public function index()
 
     public function destroy(Post $post)
     {
-        $userEmail = Auth::user()->email;
+        $userNickName = Auth::user()->nick_name;
         $data = Post::findOrFail($post->id);
-        if($data && $data->author === $userEmail){
+        if($data && $data->author === $userNickName){
             $post->delete();
             return response()->json(['message' => 'deleted successfully']);
         }else{
