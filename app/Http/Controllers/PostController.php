@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PostCollection;
 use App\Http\Resources\PostResource;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
@@ -262,7 +263,7 @@ public function index()
  *     path="/api/posts/{post}",
  *     tags={"post"},
  *     summary="특정 게시글 삭제",
- *     description="특정 게시글을 삭제합니다.",
+ *     description="특정 게시글을 삭제합니다. 그 후 댓글 및 대댓글도 삭제합니다.",
  *     @OA\Parameter(
  *         name="post",
  *         in="path",
@@ -295,15 +296,23 @@ public function index()
  * )
  */
 
-    public function destroy(Post $post)
-    {
-        $userNickName = Auth::user()->nick_name;
-        $data = Post::findOrFail($post->id);
-        if($data && $data->author === $userNickName){
-            $post->delete();
-            return response()->json(['message' => 'deleted successfully']);
-        }else{
-            return response()->json(['message'=>'unauthorized'],401);
+ public function destroy(Post $post)
+ {
+     $userNickName = Auth::user()->nick_name;
+     $data = Post::findOrFail($post->id);
+     if($data && $data->author === $userNickName){
+        $comments = $post->comment;
+        for ($i=0; $i < count($comments); $i++) { 
+            $nestedComments = $comments[$i]->nestedComment;
+            for ($j=0; $j < count($nestedComments); $j++) { 
+                $nestedComments[$j]->delete();
+            }
+            $comments[$i]->delete();
         }
-    }
+         $post->delete();
+         return response()->json(['message' => 'deleted successfully']);
+     }else{
+         return response()->json(['message'=>'unauthorized'],401);
+     }
+ } 
 }

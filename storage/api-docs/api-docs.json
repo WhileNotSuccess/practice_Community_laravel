@@ -990,7 +990,7 @@
                     "post"
                 ],
                 "summary": "특정 게시글 삭제",
-                "description": "특정 게시글을 삭제합니다.",
+                "description": "특정 게시글을 삭제합니다. 그 후 댓글 및 대댓글도 삭제합니다.",
                 "operationId": "995630fb8f7510fb391745db0c073d23",
                 "parameters": [
                     {
