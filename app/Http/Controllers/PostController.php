@@ -140,7 +140,6 @@ public function index()
  *     )
  * )
  */
-
     public function store(StorePostRequest $request)
     {
         Post::create($request->all());

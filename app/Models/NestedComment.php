@@ -9,6 +9,11 @@ class NestedComment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'comment_id',
+        'author',
+        'content',
+    ];
     public function comment() {
         return $this->belongsTo(Comment::class);
     }
