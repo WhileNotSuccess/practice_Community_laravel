@@ -50,10 +50,6 @@ class SearchController extends Controller
  *         description="게시글 배열들",
  *         @OA\JsonContent(
  *             type="object",
- *             @OA\Property(property="currentPage", type="string", example="2"),
- *             @OA\Property(property="totalPage", type="string", example="16"),
- *             @OA\Property(property="nextPage", type="string", example="http://localhost:8000/api/posts?category=%EC%9E%90%EC%9C%A0%EA%B2%8C%EC%8B%9C%ED%8C%90&page=3"),
- *             @OA\Property(property="prevPage", type="string", example="http://localhost:8000/api/posts?category=%EC%9E%90%EC%9C%A0%EA%B2%8C%EC%8B%9C%ED%8C%90&page=1"),
  *             @OA\Property(
  *                 property="data",
  *                 type="array",
