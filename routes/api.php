@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\NestedCommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\SearchController;
@@ -17,3 +18,6 @@ Route::apiResource('comments',CommentController::class);
 Route::apiResource('nested-comments',NestedCommentController::class);
 Route::get('category',[CategoryController::class, 'index']);
 Route::get('search', [SearchController::class,'index']);
+
+Route::post('/image-upload',[ImageController::class,'upload']);
+Route::delete('/image-delete',[ImageController::class,'destroy']);
