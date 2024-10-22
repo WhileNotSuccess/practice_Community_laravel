@@ -1109,7 +1109,7 @@
                     {
                         "name": "category",
                         "in": "query",
-                        "description": "게시판 카테고리",
+                        "description": "게시판 카테고리 없으면 전체 게시판에서 검색",
                         "required": false,
                         "schema": {
                             "type": "string",
@@ -1134,6 +1134,16 @@
                         "schema": {
                             "type": "string",
                             "example": "title, content, author"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "페이지당 게시글 수, 기본값 10",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": "10"
                         }
                     }
                 ],
@@ -1181,6 +1191,22 @@
                                                 },
                                                 "type": "object"
                                             }
+                                        },
+                                        "currentPage": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "totalPage": {
+                                            "type": "integer",
+                                            "example": 10
+                                        },
+                                        "nextPage": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/search?target=title&content=안녕하세요&limit=10&category=자유게시판&page=2"
+                                        },
+                                        "prevPage": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/search?target=title&content=안녕하세요&limit=10&category=자유게시판&page=1"
                                         }
                                     },
                                     "type": "object"

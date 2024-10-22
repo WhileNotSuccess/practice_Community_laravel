@@ -18,7 +18,7 @@ class SearchController extends Controller
  *     @OA\Parameter(
  *         name="category",
  *         in="query",
- *         description="게시판 카테고리",
+ *         description="게시판 카테고리 없으면 전체 게시판에서 검색",
  *         required=false,
  *         @OA\Schema(
  *             type="string",
@@ -45,6 +45,16 @@ class SearchController extends Controller
  *                 example="title, content, author"
  *             )
  *         ),
+ *     @OA\Parameter(
+ *             name="limit",
+ *             in="query",
+ *             description="페이지당 게시글 수, 기본값 10",
+ *             required=false,
+ *             @OA\Schema(
+ *                 type="integer",
+ *                 example="10"
+ *             )
+ *         ),
  *     @OA\Response(
  *         response=200,
  *         description="게시글 배열들",
@@ -63,7 +73,11 @@ class SearchController extends Controller
  *                     @OA\Property(property="createdAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z"),
  *                     @OA\Property(property="updatedAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z")
  *                 )
- *             )
+ *             ),
+ *             @OA\Property(property="currentPage", type="integer", example=1),
+ *             @OA\Property(property="totalPage", type="integer", example=10),
+ *             @OA\Property(property="nextPage", type="string", example="http://localhost:8000/api/search?target=title&content=안녕하세요&limit=10&category=자유게시판&page=2"),
+ *             @OA\Property(property="prevPage", type="string", example="http://localhost:8000/api/search?target=title&content=안녕하세요&limit=10&category=자유게시판&page=1")
  *         )
  *     ),
  *     @OA\Response(
@@ -96,8 +110,12 @@ class SearchController extends Controller
         $posts = $query->paginate($limit);
         $currentPage = $posts->currentPage();
         $totalPage = $posts->lastPage();
-        $nextPage = $posts->appends(['target' => $target,'content' => $content,'limit'=>$limit, 'category'=>$category])->nextPageUrl();
-        $prevPage = $posts->appends(['target' => $target,'content' => $content,'limit'=>$limit, 'category'=>$category])->previousPageUrl();
+        $page =  $posts->appends(['target' => $target,'content' => $content,'limit'=>$limit]);
+        if($category){
+            $page->appends(['category'=>$category]);
+        }
+        $nextPage = $page->nextPageUrl();
+        $prevPage = $page->previousPageUrl();
         return response()->json(['data' => new PostCollection($posts),'currentPage'=>$currentPage,'totalPage'=>$totalPage,'nextPage'=>$nextPage,'prevPage'=>$prevPage]);
     }
 }
