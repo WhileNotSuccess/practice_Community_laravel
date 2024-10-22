@@ -15,10 +15,10 @@ class ValidTarget implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        //'target must be in categories\'s board_name'
+        
         $targets = ['title','content','author'];
         if(!in_array($value,$targets)){
-            $fail(json_encode($targets));
+            $fail('target must be in categories\'s board_name');
         }
     }
 }

@@ -76,6 +76,10 @@ class SearchController extends Controller
     {
         $target = $request->query('target');
         $content = $request->query('content');
+        $limit = $request->query('limit');
+        if(!$limit){
+            $limit = 10;
+        }
         $contentArray = explode('-',$content);
         $regular = array_map(function($string){
             return '%'.$string.'%';
@@ -89,7 +93,11 @@ class SearchController extends Controller
             $query->where('category',$category);
         }
 
-        $posts = $query->get();
-        return response()->json(['data' => new PostCollection($posts)]);
+        $posts = $query->paginate($limit);
+        $currentPage = $posts->currentPage();
+        $totalPage = $posts->lastPage();
+        $nextPage = $posts->appends(['target' => $target,'content' => $content,'limit'=>$limit, 'category'=>$category])->nextPageUrl();
+        $prevPage = $posts->appends(['target' => $target,'content' => $content,'limit'=>$limit, 'category'=>$category])->previousPageUrl();
+        return response()->json(['data' => new PostCollection($posts),'currentPage'=>$currentPage,'totalPage'=>$totalPage,'nextPage'=>$nextPage,'prevPage'=>$prevPage]);
     }
 }
