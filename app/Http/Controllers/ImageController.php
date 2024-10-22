@@ -17,7 +17,11 @@ class ImageController extends Controller
  *     description="s3버킷에 이미지를 추가하고 추가된 파일의 url을 반환함",
  *     @OA\RequestBody(
  *         @OA\MediaType(
- *             mediaType="image"
+ *             mediaType="multipart/form-data",
+ *             @OA\Schema(
+ *                 type="object",
+ *                 @OA\Property(property="image", type="file")
+ *             )
  *         )
  *     ),
  *     @OA\Response(response="200", description="이미지가 s3버킷에 업로드 됨")
@@ -50,6 +54,13 @@ class ImageController extends Controller
  *     tags={"image"},
  *     summary="s3버킷에 이미지 삭제",
  *     description="s3버킷에 이미지를 삭제함",
+ *     @OA\Parameter(
+ *         name="url",
+ *         in="query",
+ *         description="삭제할 이미지의 url",
+ *         required=true,
+ *         @OA\Schema(type="string")
+ *     ),
  *     @OA\Response(response="200", description="이미지가 s3버킷에서 삭제됨")
  * )
  **/

@@ -365,6 +365,61 @@
                 }
             }
         },
+        "/api/image-upload": {
+            "post": {
+                "tags": [
+                    "image"
+                ],
+                "summary": "s3버킷에 이미지 추가",
+                "description": "s3버킷에 이미지를 추가하고 추가된 파일의 url을 반환함",
+                "operationId": "f952c88ac06b745cdf9cc044940bdf01",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "file"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "이미지가 s3버킷에 업로드 됨"
+                    }
+                }
+            }
+        },
+        "/api/imageDelete": {
+            "delete": {
+                "tags": [
+                    "image"
+                ],
+                "summary": "s3버킷에 이미지 삭제",
+                "description": "s3버킷에 이미지를 삭제함",
+                "operationId": "24cfc63a652da5b87c2a3ddb250ba0bc",
+                "parameters": [
+                    {
+                        "name": "url",
+                        "in": "query",
+                        "description": "삭제할 이미지의 url",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "이미지가 s3버킷에서 삭제됨"
+                    }
+                }
+            }
+        },
         "/api/nested-comments": {
             "get": {
                 "tags": [
@@ -1148,6 +1203,10 @@
         {
             "name": "comment",
             "description": "comment"
+        },
+        {
+            "name": "image",
+            "description": "image"
         },
         {
             "name": "nested-comment",
