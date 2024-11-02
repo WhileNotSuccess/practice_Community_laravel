@@ -88,7 +88,9 @@ public function index()
         $limit = 10;
     }
     if ($category = request()->query('category')) {
-        $data = Post::where('category', $category)->paginate($limit);
+        $data = Post::where('category', $category)
+        ->latest()
+        ->paginate($limit);
         $currentPage = $data->currentPage();
         $totalPage = $data->lastPage();
         $nextPage = $data->appends(['category' => $category])->nextPageUrl();

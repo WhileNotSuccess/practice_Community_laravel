@@ -107,7 +107,7 @@ class SearchController extends Controller
             $query->where('category',$category);
         }
 
-        $posts = $query->paginate($limit);
+        $posts = $query->latest()->paginate($limit);
         $currentPage = $posts->currentPage();
         $totalPage = $posts->lastPage();
         $page =  $posts->appends(['target' => $target,'content' => $content,'limit'=>$limit]);
