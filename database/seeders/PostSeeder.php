@@ -15,7 +15,7 @@ class PostSeeder extends Seeder
     public function run(): void
     {
         User::all()->each(function($user){
-            Post::factory()->count(50)->create(['author'=>$user->nick_name]);
+            Post::factory()->count(5)->create(['author'=>$user->nick_name]);
         });
     }
 }

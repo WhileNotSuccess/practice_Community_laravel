@@ -15,7 +15,7 @@ class NestedCommentSeeder extends Seeder
     public function run(): void
     {
         Comment::all()->each(function ($comment){
-            NestedComment::factory()->count(2)->create(['comment_id'=>$comment->id]);
+            NestedComment::factory()->count(1)->create(['comment_id'=>$comment->id]);
         });
     }
 }
