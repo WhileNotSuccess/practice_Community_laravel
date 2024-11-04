@@ -1238,6 +1238,16 @@
                             "type": "integer",
                             "example": "1"
                         }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "페이지당 게시글 수, 기본값 10",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": "10"
+                        }
                     }
                 ],
                 "responses": {
