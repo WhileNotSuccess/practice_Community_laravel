@@ -1252,7 +1252,70 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "사용자의 게시글 배열들"
+                        "description": "사용자의 게시글 배열들",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "currentPage": {
+                                            "type": "string",
+                                            "example": "2"
+                                        },
+                                        "totalPage": {
+                                            "type": "string",
+                                            "example": "16"
+                                        },
+                                        "nextPage": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/user-post/1?limit=3&page=3"
+                                        },
+                                        "prevPage": {
+                                            "type": "string",
+                                            "example": "http://localhost:8000/api/user-post/1?limit=3&page=1"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Prof."
+                                                    },
+                                                    "content": {
+                                                        "type": "string",
+                                                        "example": "Sunt excepturi ad officiis laudantium."
+                                                    },
+                                                    "author": {
+                                                        "type": "string",
+                                                        "example": "rylan65"
+                                                    },
+                                                    "category": {
+                                                        "type": "string",
+                                                        "example": "자유게시판"
+                                                    },
+                                                    "createdAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-30T05:45:46.000000Z"
+                                                    },
+                                                    "updatedAt": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2024-09-30T05:45:46.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -147,7 +147,28 @@ class SearchController extends Controller
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="사용자의 게시글 배열들"
+     *         description="사용자의 게시글 배열들",
+     *         @OA\JsonContent(
+ *   *         type="object",
+ *             @OA\Property(property="currentPage", type="string", example="2"),
+ *             @OA\Property(property="totalPage", type="string", example="16"),
+ *             @OA\Property(property="nextPage", type="string", example="http://localhost:8000/api/user-post/1?limit=3&page=3"),
+ *             @OA\Property(property="prevPage", type="string", example="http://localhost:8000/api/user-post/1?limit=3&page=1"),
+ *             @OA\Property(
+ *                 property="data",
+ *                 type="array",
+ *                 @OA\Items(
+ *                     type="object",
+ *                     @OA\Property(property="id", type="integer", example=2),
+ *                     @OA\Property(property="title", type="string", example="Prof."),
+ *                     @OA\Property(property="content", type="string", example="Sunt excepturi ad officiis laudantium."),
+ *                     @OA\Property(property="author", type="string", example="rylan65"),
+ *                     @OA\Property(property="category", type="string", example="자유게시판"),
+ *                     @OA\Property(property="createdAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z"),
+ *                     @OA\Property(property="updatedAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z")
+ *                 )
+ *             )
+ *         )
      *     )
      * )
      */
