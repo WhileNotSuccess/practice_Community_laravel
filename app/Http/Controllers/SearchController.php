@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PostCollection;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\User;
+use App\Models\Post;
 class SearchController extends Controller
 {
     /**
@@ -117,5 +118,57 @@ class SearchController extends Controller
         $nextPage = $page->nextPageUrl();
         $prevPage = $page->previousPageUrl();
         return response()->json(['data' => new PostCollection($posts),'currentPage'=>$currentPage,'totalPage'=>$totalPage,'nextPage'=>$nextPage,'prevPage'=>$prevPage]);
+    }
+    /**
+     * @OA\Get(
+     *     path="/api/user-post/{user}",
+     *     tags={"post"},
+     *     summary="사용자의 게시글 조회",
+     *     description="사용자의 게시글 조회",  
+     *     @OA\Parameter(
+     *         name="user",
+     *         in="path",
+     *         description="사용자 아이디",
+     *         required=true,
+     *         @OA\Schema(
+     *             type="integer",
+     *             example="1"
+     *         )
+     *     ),
+     *     @OA\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         description="페이지당 게시글 수, 기본값 10",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             example="10"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="사용자의 게시글 배열들"
+     *     )
+     * )
+     */
+    public function userPost(User $user){
+        $limit = request()->query('limit');
+        if(!$limit){
+            $limit = 10;
+        }
+        $posts = Post::where('author',$user->nick_name)
+        ->latest()
+        ->paginate($limit);
+        $currentPage = $posts->currentPage();
+        $totalPage = $posts->lastPage();
+        $nextPage = $posts->appends(['limit'=>$limit])->nextPageUrl();
+        $prevPage = $posts->appends(['limit'=>$limit])->previousPageUrl();
+        return response()->json([
+            'data' => new PostCollection($posts),
+            'currentPage'=>$currentPage,
+            'totalPage'=>$totalPage,
+            'nextPage'=>$nextPage,
+            'prevPage'=>$prevPage
+        ]);
     }
 }

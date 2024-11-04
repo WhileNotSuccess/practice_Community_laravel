@@ -18,6 +18,7 @@ Route::apiResource('comments',CommentController::class);
 Route::apiResource('nested-comments',NestedCommentController::class);
 Route::get('category',[CategoryController::class, 'index']);
 Route::get('search', [SearchController::class,'index']);
+Route::get('user-post/{user}', [SearchController::class,'userPost']);
 
 Route::post('/image-upload',[ImageController::class,'upload']);
 Route::delete('/image-delete',[ImageController::class,'destroy']);

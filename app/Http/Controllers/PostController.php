@@ -93,8 +93,8 @@ public function index()
         ->paginate($limit);
         $currentPage = $data->currentPage();
         $totalPage = $data->lastPage();
-        $nextPage = $data->appends(['category' => $category])->nextPageUrl();
-        $prevPage = $data->appends(['category' => $category])->previousPageUrl();
+        $nextPage = $data->appends(['category' => $category,'limit'=>$limit])->nextPageUrl();
+        $prevPage = $data->appends(['category' => $category,'limit'=>$limit])->previousPageUrl();
         
         return response()->json([
             'currentPage' => $currentPage,
