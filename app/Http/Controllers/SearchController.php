@@ -7,9 +7,11 @@ use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PostCollection;
 use App\Models\Comment;
 use App\Models\NestedComment;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Post;
+
 class SearchController extends Controller
 {
     /**
@@ -123,18 +125,18 @@ class SearchController extends Controller
     }
     /**
      * @OA\Get(
-     *     path="/api/find-post-by-comment/{userId}",
+     *     path="/api/find-post-by-comment",
      *     tags={"post"},
      *     summary="사용자가 댓글을 단 게시글 조회",
      *     description="사용자의 아이디를 받아서 그 사람이 댓글을 단 게시글 조회",  
      *     @OA\Parameter(
-     *         name="user",
-     *         in="path",
-     *         description="사용자 아이디, 닉네임이나 이메일이 아니라, 1/2/3 같이 하나씩 커지는 숫자",
+     *         name="nickName",
+     *         in="header",
+     *         description="사용자 닉네임",
      *         required=true,
      *         @OA\Schema(
-     *             type="integer",
-     *             example="1"
+     *             type="string",
+     *             example="권기현"
      *         )
      *     ),
      *     @OA\Parameter(
@@ -151,30 +153,35 @@ class SearchController extends Controller
      *         response=200,
      *         description="사용자의 게시글 배열들",
      *         @OA\JsonContent(
- *   *         type="object",
- *             @OA\Property(property="currentPage", type="string", example="2"),
- *             @OA\Property(property="totalPage", type="string", example="16"),
- *             @OA\Property(property="nextPage", type="string", example="http://localhost:8000/api/find-post-by-comment/1?limit=3&page=3"),
- *             @OA\Property(property="prevPage", type="string", example="http://localhost:8000/api/find-post-by-comment/1?limit=3&page=1"),
- *             @OA\Property(
- *                 property="data",
- *                 type="array",
- *                 @OA\Items(
- *                     type="object",
- *                     @OA\Property(property="id", type="integer", example=2),
- *                     @OA\Property(property="title", type="string", example="Prof."),
- *                     @OA\Property(property="content", type="string", example="Sunt excepturi ad officiis laudantium."),
- *                     @OA\Property(property="author", type="string", example="rylan65"),
- *                     @OA\Property(property="category", type="string", example="자유게시판"),
- *                     @OA\Property(property="createdAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z"),
- *                     @OA\Property(property="updatedAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z")
- *                 )
- *             )
- *         )
+     *            type="object",
+     *            @OA\Property(property="currentPage", type="string", example="2"),
+     *            @OA\Property(property="totalPage", type="string", example="16"),
+     *            @OA\Property(property="nextPage", type="string", example="http://localhost:8000/api/find-post-by-comment/1?limit=3&page=3"),
+     *            @OA\Property(property="prevPage", type="string", example="http://localhost:8000/api/find-post-by-comment/1?limit=3&page=1"),
+     *            @OA\Property(  
+     *                property="data",
+     *                type="array",
+     *                @OA\Items(
+     *                    type="object",
+     *                    @OA\Property(property="id", type="integer", example=2),
+     *                    @OA\Property(property="title", type="string", example="Prof."),
+     *                    @OA\Property(property="content", type="string", example="Sunt excepturi ad officiis laudantium."),
+     *                    @OA\Property(property="author", type="string", example="rylan65"),
+     *                    @OA\Property(property="category", type="string", example="자유게시판"),
+     *                    @OA\Property(property="createdAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z"),
+     *                    @OA\Property(property="updatedAt", type="string", format="date-time", example="2024-09-30T05:45:46.000000Z")
+     *                )
+     *            )
+     *         )
      *     )
      * )
      */
-    public function userPost(User $user){
+    public function userPost(Request $request){
+        $userNickName = $request->header('nickName');
+        if(!$userNickName){
+            return response()->json(['message'=> '헤더에 유저정보가 없습니다.'],400);
+        }
+        $user = User::where('nick_name',$userNickName)->first();
         $limit = request()->query('limit');
         if(!$limit){
             $limit = 10;

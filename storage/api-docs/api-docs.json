@@ -1220,23 +1220,23 @@
                 }
             }
         },
-        "/api/find-post-by-comment/{userId}": {
+        "/api/find-post-by-comment": {
             "get": {
                 "tags": [
                     "post"
                 ],
                 "summary": "사용자가 댓글을 단 게시글 조회",
                 "description": "사용자의 아이디를 받아서 그 사람이 댓글을 단 게시글 조회",
-                "operationId": "1e7070253ce61badaedb45c8c0254aad",
+                "operationId": "04e081c30d9014a2490c2dce30f2a4b5",
                 "parameters": [
                     {
-                        "name": "user",
-                        "in": "path",
-                        "description": "사용자 아이디, 닉네임이나 이메일이 아니라, 1/2/3 같이 하나씩 커지는 숫자",
+                        "name": "nickName",
+                        "in": "header",
+                        "description": "사용자 닉네임",
                         "required": true,
                         "schema": {
-                            "type": "integer",
-                            "example": "1"
+                            "type": "string",
+                            "example": "권기현"
                         }
                     },
                     {
