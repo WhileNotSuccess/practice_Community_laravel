@@ -1220,19 +1220,19 @@
                 }
             }
         },
-        "/api/user-post/{user}": {
+        "/api/find-post-by-comment/{userId}": {
             "get": {
                 "tags": [
                     "post"
                 ],
-                "summary": "사용자의 게시글 조회",
-                "description": "사용자의 게시글 조회",
-                "operationId": "6ce34a04be7ad57810e0b6b42e6d3aa3",
+                "summary": "사용자가 댓글을 단 게시글 조회",
+                "description": "사용자의 아이디를 받아서 그 사람이 댓글을 단 게시글 조회",
+                "operationId": "1e7070253ce61badaedb45c8c0254aad",
                 "parameters": [
                     {
                         "name": "user",
                         "in": "path",
-                        "description": "사용자 아이디",
+                        "description": "사용자 아이디, 닉네임이나 이메일이 아니라, 1/2/3 같이 하나씩 커지는 숫자",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -1267,11 +1267,11 @@
                                         },
                                         "nextPage": {
                                             "type": "string",
-                                            "example": "http://localhost:8000/api/user-post/1?limit=3&page=3"
+                                            "example": "http://localhost:8000/api/find-post-by-comment/1?limit=3&page=3"
                                         },
                                         "prevPage": {
                                             "type": "string",
-                                            "example": "http://localhost:8000/api/user-post/1?limit=3&page=1"
+                                            "example": "http://localhost:8000/api/find-post-by-comment/1?limit=3&page=1"
                                         },
                                         "data": {
                                             "type": "array",

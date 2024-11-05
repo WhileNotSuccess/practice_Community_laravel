@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SearchRequest;
 use App\Http\Resources\PostCollection;
+use App\Models\Comment;
+use App\Models\NestedComment;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Post;
@@ -121,14 +123,14 @@ class SearchController extends Controller
     }
     /**
      * @OA\Get(
-     *     path="/api/user-post/{user}",
+     *     path="/api/find-post-by-comment/{userId}",
      *     tags={"post"},
-     *     summary="사용자의 게시글 조회",
-     *     description="사용자의 게시글 조회",  
+     *     summary="사용자가 댓글을 단 게시글 조회",
+     *     description="사용자의 아이디를 받아서 그 사람이 댓글을 단 게시글 조회",  
      *     @OA\Parameter(
      *         name="user",
      *         in="path",
-     *         description="사용자 아이디",
+     *         description="사용자 아이디, 닉네임이나 이메일이 아니라, 1/2/3 같이 하나씩 커지는 숫자",
      *         required=true,
      *         @OA\Schema(
      *             type="integer",
@@ -152,8 +154,8 @@ class SearchController extends Controller
  *   *         type="object",
  *             @OA\Property(property="currentPage", type="string", example="2"),
  *             @OA\Property(property="totalPage", type="string", example="16"),
- *             @OA\Property(property="nextPage", type="string", example="http://localhost:8000/api/user-post/1?limit=3&page=3"),
- *             @OA\Property(property="prevPage", type="string", example="http://localhost:8000/api/user-post/1?limit=3&page=1"),
+ *             @OA\Property(property="nextPage", type="string", example="http://localhost:8000/api/find-post-by-comment/1?limit=3&page=3"),
+ *             @OA\Property(property="prevPage", type="string", example="http://localhost:8000/api/find-post-by-comment/1?limit=3&page=1"),
  *             @OA\Property(
  *                 property="data",
  *                 type="array",
@@ -177,9 +179,12 @@ class SearchController extends Controller
         if(!$limit){
             $limit = 10;
         }
-        $posts = Post::where('author',$user->nick_name)
-        ->latest()
-        ->paginate($limit);
+      
+        $comments = Comment::where('author',$user->nick_name)->pluck('post_id');
+        $nestedComment = NestedComment::where('author', $user->nick_name)->pluck('comment_id');
+        $commentsFromNestedComment = Comment::whereIn('id', $nestedComment)->pluck('post_id');
+        $postIds =  array_merge($commentsFromNestedComment->toArray(),$comments->toArray());
+        $posts = Post::whereIn('id', $postIds)->paginate($limit);
         $currentPage = $posts->currentPage();
         $totalPage = $posts->lastPage();
         $nextPage = $posts->appends(['limit'=>$limit])->nextPageUrl();
